@@ -1,0 +1,12 @@
+{
+  "name": "backbone-facets",
+  "version": "0.0.1",
+  "description": "Facet generation for Backbone models",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/tildedave/backbone-facets",
+  "author": "Dave King",
+  "license": "MIT"
+}
