@@ -4,9 +4,13 @@
   "description": "Facet generation for Backbone models",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "test": "NODE_PATH=$NODE_PATH:./lib mocha spec/"
   },
-  "repository": "https://github.com/tildedave/backbone-facets",
+  "repository": "https://github.com/tildedave/backbone-facets.git",
   "author": "Dave King",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "backbone": "0.9.9",
+    "mocha": "1.8.1"
+  }
 }
