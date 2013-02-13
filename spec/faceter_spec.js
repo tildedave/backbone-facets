@@ -99,4 +99,18 @@ describe('faceter', function () {
     var triangleModel = facetedCollection.where({ title: 'Triangle' })[0];
     assert.equal(2, triangleModel.get('count'));
   });
+
+  it('handles model updates in the original collection', function () {
+    var facetedCollection = facets.facetCollection(shapeCriteria, collection);
+
+    var triangleFacet = facetedCollection.where({ title: 'Triangle' })[0];
+    var squareFacet = facetedCollection.where({ title: 'Square' })[0];
+    redSquare.set('shape', 'Triangle');
+
+    // Should now have only one triangle facet
+    assert.equal(1, facetedCollection.length);
+
+    assert.equal(3, triangleFacet.get('count'));
+  });
+
 });
