@@ -38,4 +38,25 @@ describe('faceter', function () {
     assert.equal(3, singleFacet.get('count'));
     assert.equal('Trivial', singleFacet.get('title'));
   });
+
+  it('maps models to different facets', function () {
+    var shapeCriteria, facetedCollection;
+
+    shapeCriteria = function (model) {
+      var shape = model.get('shape');
+      return {
+        id: shape.toLowerCase(),
+        title: shape
+      };
+    };
+    facetedCollection = facets.facetCollection(shapeCriteria, collection);
+
+    assert.equal(2, facetedCollection.length);
+
+    var triangleFacet = facetedCollection.where({ title: 'Triangle' })[0];
+    assert.equal(2, triangleFacet.get('count'));
+
+    var squareFacet = facetedCollection.where({ title: 'Square' })[0];
+    assert.equal(1, squareFacet.get('count'));
+  });
 });
