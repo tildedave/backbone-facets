@@ -72,4 +72,18 @@ describe('faceter', function () {
     var squareFacet = facetedCollection.where({ title: 'Square' })[0];
     assert.equal(2, squareFacet.get('count'));
   });
+
+  it('updates the facets when a model is removed', function () {
+    var facetedCollection;
+
+    facetedCollection = facets.facetCollection(shapeCriteria, collection);
+    collection.remove(collection.where({ shape: 'Triangle' })[0]);
+
+    // Should now have one triangle and one square
+    var squareModel = facetedCollection.where({ title: 'Square' })[0];
+    assert.equal(1, squareModel.get('count'));
+
+    var triangleModel = facetedCollection.where({ title: 'Triangle' })[0];
+    assert.equal(1, triangleModel.get('count'));
+  });
 });
