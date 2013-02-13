@@ -4,7 +4,7 @@ var assert = require('assert'),
 
 describe('faceter', function () {
 
-  var collection, redTriangle, blueTriangle, redSquare;
+  var collection, redTriangle, blueTriangle, redSquare, shapeCriteria;
 
   function shapeModel(id, color, shape) {
     return new Backbone.Model({
@@ -20,6 +20,15 @@ describe('faceter', function () {
     redSquare = shapeModel(3, 'Red', 'Square');
     collection = new Backbone.Collection([redTriangle, blueTriangle, redSquare]);
   });
+
+  shapeCriteria = function (model) {
+    var shape = model.get('shape');
+    return {
+      id: shape.toLowerCase(),
+      title: shape
+    };
+  };
+
 
   it('maps every model to one facet', function () {
     var trivialCriteria, facetedCollection;
@@ -40,15 +49,8 @@ describe('faceter', function () {
   });
 
   it('maps models to different facets', function () {
-    var shapeCriteria, facetedCollection;
+    var facetedCollection;
 
-    shapeCriteria = function (model) {
-      var shape = model.get('shape');
-      return {
-        id: shape.toLowerCase(),
-        title: shape
-      };
-    };
     facetedCollection = facets.facetCollection(shapeCriteria, collection);
 
     assert.equal(2, facetedCollection.length);
@@ -58,5 +60,16 @@ describe('faceter', function () {
 
     var squareFacet = facetedCollection.where({ title: 'Square' })[0];
     assert.equal(1, squareFacet.get('count'));
+  });
+
+  it('updates the facets when a model is added', function () {
+    var facetedCollection;
+
+    facetedCollection = facets.facetCollection(shapeCriteria, collection);
+    collection.add(shapeModel(4, 'Green', 'Square'));
+
+    // Should now have two squares
+    var squareFacet = facetedCollection.where({ title: 'Square' })[0];
+    assert.equal(2, squareFacet.get('count'));
   });
 });
