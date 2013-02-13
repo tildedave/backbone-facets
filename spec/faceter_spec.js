@@ -113,4 +113,19 @@ describe('faceter', function () {
     assert.equal(3, triangleFacet.get('count'));
   });
 
+  it('handles model updates after addition', function () {
+    var facetedCollection = facets.facetCollection(shapeCriteria, collection);
+
+    var greenSquare = shapeModel(4, 'Green', 'Square');
+    collection.add(greenSquare);
+    greenSquare.set('shape', 'Triangle');
+
+    var triangleFacet = facetedCollection.where({ title: 'Triangle' })[0];
+    var squareFacet = facetedCollection.where({ title: 'Square' })[0];
+
+    // Should have updated triangle facet and square facet
+    assert.equal(3, triangleFacet.get('count'));
+    assert.equal(1, squareFacet.get('count'));
+  });
+
 });
