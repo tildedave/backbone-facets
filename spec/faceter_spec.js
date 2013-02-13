@@ -80,10 +80,23 @@ describe('faceter', function () {
     collection.remove(collection.where({ shape: 'Triangle' })[0]);
 
     // Should now have one triangle and one square
-    var squareModel = facetedCollection.where({ title: 'Square' })[0];
-    assert.equal(1, squareModel.get('count'));
+    var squareFacet = facetedCollection.where({ title: 'Square' })[0];
+    assert.equal(1, squareFacet.get('count'));
+
+    var triangleFacet = facetedCollection.where({ title: 'Triangle' })[0];
+    assert.equal(1, triangleFacet.get('count'));
+  });
+
+  it('removes facets without representation in collection', function () {
+    var facetedCollection;
+
+    facetedCollection = facets.facetCollection(shapeCriteria, collection);
+    collection.remove(collection.where({ shape: 'Square' })[0]);
+
+    // Should now have only one triangle facet
+    assert.equal(1, facetedCollection.length);
 
     var triangleModel = facetedCollection.where({ title: 'Triangle' })[0];
-    assert.equal(1, triangleModel.get('count'));
+    assert.equal(2, triangleModel.get('count'));
   });
 });
